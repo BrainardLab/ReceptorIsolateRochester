@@ -103,17 +103,6 @@ subplot(1,2,2); hold on;
 xlabel('Wavelength');
 ylabel('LED Power');
 
-%% Specify which receptor to target and set up background
-%
-%   1 = L, 2 = M, 3 = S
-whichReceptorsToTarget = [2];
-whichReceptorsToIgnore = [];
-whichReceptorsToMinimize = [];
-whichPrimariesToPin = [];
-backgroundPrimary = 0.5*ones(length(theLEDFiles),1);
-primaryHeadRoom = 0.02;
-maxPowerDiff = 10000;
-
 %% Specify ambient light
 %
 % The ambient light is not the background for the modulations. Rather it is
@@ -125,19 +114,33 @@ maxPowerDiff = 10000;
 % Currently we assume it is dark when all primaries are set to 0.
 ambientSpd = zeros(size(wavelengths));
 
-% User chooses whether to maximize contrast in targeted receptor classes or
-% or get it as close to a specified value as possible.
+%% Specify background in terms of primaries
+backgroundPrimary = [0.45 0.55 0.50]';
+
+%% Specify which receptor to target and set up background
 %
-% If we target, here we specify the same contrast for all targeted classes.
-% This is not necessary, they can differ.  It just makes the demo code a
-% bit simpler to yoke them since we only have to prompt for one number.
-maximizeTargetContrast = GetWithDefault('\tMaximize contrast? [1 = yes, 0 = no]', 1);
-if maximizeTargetContrast
-    desiredContrast = [];
-else
-    desiredContrast = GetWithDefault('\tDesired contrast (applies to all targeted classes)?', 0.45)*ones(size(whichReceptorsToTarget));
-end
-fprintf('\n');
+%   1 = L, 2 = M, 3 = S, 4 = lum
+whichReceptorsToTarget = [1 2 3 4];
+whichReceptorsToIgnore = [];
+whichReceptorsToMinimize = [];
+whichPrimariesToPin = [];
+desiredContrast = [0.5 0.5 0.5 0.5];
+primaryHeadRoom = 0.02;
+maxPowerDiff = 10000;
+
+% % User chooses whether to maximize contrast in targeted receptor classes or
+% % or get it as close to a specified value as possible.
+% %
+% % If we target, here we specify the same contrast for all targeted classes.
+% % This is not necessary, they can differ.  It just makes the demo code a
+% % bit simpler to yoke them since we only have to prompt for one number.
+% maximizeTargetContrast = GetWithDefault('\tMaximize contrast? [1 = yes, 0 = no]', 1);
+% if maximizeTargetContrast
+%     desiredContrast = [];
+% else
+%     desiredContrast = GetWithDefault('\tDesired contrast (applies to all targeted classes)?', 0.45)*ones(size(whichReceptorsToTarget));
+% end
+% fprintf('\n');
 
 %% Call the optimization routine.
 %
