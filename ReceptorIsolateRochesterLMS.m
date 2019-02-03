@@ -144,7 +144,9 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % To check whether what was specified is in gamut, compare the obtained
 % contrasts printed out when the program runs to what you requested. If
 % they agree, then you're good. If they differ, then the requested
-% modulation was not in gamut.
+% modulation was not in gamut. You could write a little compute/check loop
+% that found the maximum possible luminance contrast automatically, if you
+% wanted to automate the process of finding the max available contrast.
 %   whichReceptorsToTarget = [1 2 3 4];
 %   desiredContrast = [0.5 0.5 0.5 0.5];
 %
@@ -159,8 +161,8 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % while to make finding max contrast in a particular direction automatic.
 % And, it only took me about a minute to find the 78% number, so it is
 % perfectly practical.
-%  whichReceptorsToTarget = [1 2 3 4];
-%  desiredContrast = [0.78 0.78 0.78 0.78];
+%   whichReceptorsToTarget = [1 2 3 4];
+%   desiredContrast = [0.78 0.78 0.78 0.78];
 %
 % 3) Isoluminant modulation. This works because it enforces that S cone and
 % luminance contrast are zero, becuase neither 3 or 4 are included in the
@@ -173,15 +175,15 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % it probably does depend on adaptation to the background. None-the-less,
 % this is pretty standard. And probably close enough as long as the
 % background is somewhere close to neutral.
-%  whichReceptorsToTarget = [1 2]T
+%  whichReceptorsToTarget = [1 2];
 %  desiredContrast = [];
 %
 % 4) Receptor isolating.  Specify which receptor you want to isolate and to
 % ignore luminance. Here what works best is to get rid of the luminance
 % row in the T_receptors matrix.
-T_receptors = T_receptors(1:3,:);
-whichReceptorsToTarget = [3];
-desiredContrast = [];
+  T_receptors = T_receptors(1:3,:);
+  whichReceptorsToTarget = [3];
+  desiredContrast = [];
 
 %% Specify headroom
 %
@@ -228,8 +230,8 @@ negativeModulationPrimary = backgroundPrimary-deltaPrimary;
 % modulations also produce luminance contrast.
 T_receptors = [T_cones ; T_lum];
 backgroundReceptors = T_receptors*(B_primary*backgroundPrimary + ambientSpd);
-modulationReceptors = T_receptors*B_primary*(positiveModulationPrimary - backgroundPrimary);
-contrastReceptors = modulationReceptors ./ backgroundReceptors;
+deltaReceptors = T_receptors*B_primary*(positiveModulationPrimary - backgroundPrimary);
+contrastReceptors = deltaReceptors ./ backgroundReceptors;
 fprintf('Obtained contrasts\n');
 for j = 1:size(T_receptors,1)
     fprintf('\tClass %d: contrast = %0.4f\n',j,contrastReceptors(j));
