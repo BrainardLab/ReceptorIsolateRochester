@@ -126,7 +126,8 @@ ylabel('LED Power');
 ambientSpd = zeros(size(wavelengths));
 
 %% Specify background in terms of primaries
-backgroundPrimary = [0.12 0.5 0.24]';
+% backgroundPrimary = [0.12 0.5 0.24]';
+backgroundPrimary = [0.5 0.5 0.5]';
 
 %% Specify which receptor to target and set up background
 %
