@@ -126,7 +126,7 @@ ylabel('LED Power');
 ambientSpd = zeros(size(wavelengths));
 
 %% Specify background in terms of primaries
-backgroundPrimary = [0.45 0.55 0.50]';
+backgroundPrimary = [0.12 0.5 0.24]';
 
 %% Specify which receptor to target and set up background
 %
@@ -148,8 +148,8 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % that found the maximum possible luminance contrast automatically, if you
 % wanted to automate the process of finding the max available contrast.
 %   whichReceptorsToTarget = [1 2 3 4];
-%   desiredContrast = [0.5 0.5 0.5 0.5];
-%
+%   desiredContrast = [1 1 1 1];
+
 % 2) Produce maximum luminance constrast. You can first run with all four
 % receptors targeted and desired contrast as the empty matrix. This will
 % give you a sense of the max contrast, but it doesn't enforce the
@@ -161,9 +161,9 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % while to make finding max contrast in a particular direction automatic.
 % And, it only took me about a minute to find the 78% number, so it is
 % perfectly practical.
-%   whichReceptorsToTarget = [1 2 3 4];
-%   desiredContrast = [0.78 0.78 0.78 0.78];
-%
+  whichReceptorsToTarget = [1 2 3 4];
+  desiredContrast = [1 1 1 1];
+
 % 3) Isoluminant modulation. This works because it enforces that S cone and
 % luminance contrast are zero, becuase neither 3 or 4 are included in the
 % whichReceptorsToTarget list.  The contrast on these two is maximized
@@ -181,9 +181,9 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % 4) Receptor isolating.  Specify which receptor you want to isolate and to
 % ignore luminance. Here what works best is to get rid of the luminance
 % row in the T_receptors matrix.
-  T_receptors = T_receptors(1:3,:);
-  whichReceptorsToTarget = [3];
-  desiredContrast = [];
+%   T_receptors = T_receptors(1:3,:);
+%   whichReceptorsToTarget = [3];
+%   desiredContrast = [];
 
 %% Specify headroom
 %
@@ -193,7 +193,7 @@ backgroundPrimary = [0.45 0.55 0.50]';
 % can get a little wonky right at their extrema, and sometimes the gamut
 % change over time and I like to avoid having to change stimuli if the
 % gamut gets a little smaller.
-primaryHeadRoom = 0.02;
+primaryHeadRoom = 0.00;
 
 %% Other parameters
 %
